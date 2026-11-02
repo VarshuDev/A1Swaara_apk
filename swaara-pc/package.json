@@ -1,0 +1,90 @@
+{
+  "name": "a1swaara-pc",
+  "version": "1.0.0",
+  "description": "A1 Swaara Desktop Music Player for Windows PC",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "electron:dev": "vite --port 5173",
+    "electron": "electron .",
+    "start": "electron .",
+    "package:pc": "node scripts/package-pc.cjs",
+    "package:installer": "npm run build && electron-builder --win nsis --publish never",
+    "ios:sync": "npm run build && npx cap sync ios",
+    "ios:open": "npx cap open ios"
+  },
+  "keywords": [
+    "swaara",
+    "a1swaara",
+    "music-player",
+    "audiophile",
+    "320kbps",
+    "electron",
+    "desktop-player"
+  ],
+  "author": "VarshuDev",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.28.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
+    "@tailwindcss/vite": "^4.1.2",
+    "@types/node": "^22.13.5",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^34.2.0",
+    "electron-builder": "^26.15.3",
+    "rcedit": "^5.0.2",
+    "tailwindcss": "^4.1.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.0"
+  },
+  "build": {
+    "appId": "com.varshudev.a1swaara",
+    "productName": "A1 Swaara",
+    "copyright": "Copyright © 2026 VarshuDev",
+    "publish": null,
+    "artifactName": "${productName}_Setup.${ext}",
+    "directories": {
+      "output": "../A1_Swaara_Installer",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "A1 Swaara",
+      "runAfterFinish": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico"
+    }
+  }
+}

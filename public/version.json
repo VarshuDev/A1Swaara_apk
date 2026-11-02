@@ -1,0 +1,10 @@
+{
+  "version": "1.1.4",
+  "versionCode": 15,
+  "minRequiredVersion": "1.0.0",
+  "forceUpdate": false,
+  "title": "A1 Swaara v1.1.4 - Lossless Audio Engine & High-Fidelity Pipeline",
+  "changelog": "- Apple Music-grade Lossless Audio Engine: OPUS 251kbps and AAC 256kbps unthrottled peak bitrate stream selection\n- Audiophile ExoPlayer Rendering: 32-bit floating-point PCM audio output to hardware sinks and external DACs\n- Real-Time Quality Badges: Live dynamic badges (LOSSLESS, HI-RES LOSSLESS, MAXIMUM) showing active codec and bitrate in player\n- Pure Signal Path: Lossless mode bypasses dynamic DSP volume compression and silence skipping\n- Supabase Leaderboard Acceleration: High-speed batch profile resolution, fuzzy artist query matching, and local listening hours reconciliation\n- Expanded Playback Buffering: 4-minute (240s) safety pre-cache preventing high-bitrate streaming interruptions",
+  "downloadUrl": "https://raaga-music-8e1f2.web.app/A1_Swaara_v1.1.4.apk",
+  "mirrorDownloadUrl": "https://vdfwhjsjkvmcoalgjtke.supabase.co/storage/v1/object/public/releases/A1_Swaara_v1.1.4.apk"
+}

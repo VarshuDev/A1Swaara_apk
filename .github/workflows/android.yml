@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - "README.md"
+  pull_request:
+    paths-ignore:
+      - "README.md"
+
+jobs:
+  verify:
+    name: Verify APK & Release Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate version.json schema
+        run: |
+          echo "Validating version.json structure..."
+          version=$(jq -r '.version' version.json)
+          code=$(jq -r '.versionCode' version.json)
+          url=$(jq -r '.downloadUrl' version.json)
+          
+          if [ -z "$version" ] || [ "$version" = "null" ]; then
+            echo "::error::Missing version field in version.json"
+            exit 1
+          fi
+          if [ -z "$code" ] || [ "$code" = "null" ]; then
+            echo "::error::Missing versionCode field in version.json"
+            exit 1
+          fi
+          if [ -z "$url" ] || [ "$url" = "null" ]; then
+            echo "::error::Missing downloadUrl field in version.json"
+            exit 1
+          fi
+          echo "Found version: $version (versionCode: $code)"
+          echo "Download URL: $url"
+
+      - name: Verify APK file integrity
+        run: |
+          version=$(jq -r '.version' version.json)
+          apk_file="A1_Swaara_v${version}.apk"
+          echo "Checking APK: $apk_file"
+          
+          if [ ! -f "$apk_file" ]; then
+            echo "::error::Target APK $apk_file does not exist in repository!"
+            exit 1
+          fi
+          
+          size=$(stat -c%s "$apk_file")
+          size_mb=$(( size / 1024 / 1024 ))
+          echo "APK Size: $size bytes (~$size_mb MB)"
+          
+          if [ "$size" -lt 10000000 ]; then
+            echo "::error::APK file size is abnormally low ($size bytes)"
+            exit 1
+          fi
+          
+          echo "Verifying APK archive integrity..."
+          unzip -t "$apk_file" > /dev/null
+          echo "APK archive passed integrity verification!"
+
+      - name: Compute SHA-256 Checksums
+        run: |
+          sha256sum A1_Swaara_v*.apk > CHECKSUMS-SHA256.txt
+          cat CHECKSUMS-SHA256.txt
+
+      - name: Upload Checksums Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-checksums
+          path: CHECKSUMS-SHA256.txt

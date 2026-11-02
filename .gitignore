@@ -1,0 +1,10 @@
+A1_Swaara_PC/
+A1_Swaara_Installer/
+node_modules/
+dist/
+.vite/
+*.log
+swaara-lite/
+*Lite*
+.firebase/
+public/*.apk

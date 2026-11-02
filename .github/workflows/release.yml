@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Locate and verify release APK
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          version="${TAG_NAME#v}"
+          apk_file="A1_Swaara_v${version}.apk"
+          echo "Looking for: $apk_file"
+          if [ ! -f "$apk_file" ]; then
+            echo "::error::Release APK $apk_file not found for tag $TAG_NAME"
+            exit 1
+          fi
+          echo "Generating SHA-256 for $apk_file..."
+          sha256sum "$apk_file" > "${apk_file}.sha256"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            A1_Swaara_v*.apk
+            *.sha256
+          generate_release_notes: true

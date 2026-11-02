@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Swaara Calm Desktop Music Player Palette */
+    --swaara-bg-deep: #070809;
+    --swaara-bg-base: #0B0D0F;
+    --swaara-bg-elevated: #101214;
+    --swaara-bg-subtle: #16181C;
+
+    /* Single Restrained Accent */
+    --swaara-accent: #10B981;
+    --swaara-accent-hover: #059669;
+
+    /* Typography */
+    --swaara-text-primary: #F5F5F5;
+    --swaara-text-secondary: #9A9FA3;
+    --swaara-text-muted: #6B7280;
+
+    /* Borders */
+    --swaara-border: rgba(255, 255, 255, 0.06);
+    --swaara-border-hover: rgba(255, 255, 255, 0.12);
+  }
+
+  body {
+    background-color: var(--swaara-bg-deep);
+    color: var(--swaara-text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Electron Draggable Header Regions */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Clean Desktop Surfaces */
+.surface-card {
+  background-color: var(--swaara-bg-base);
+  border: 1px solid var(--swaara-border);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.surface-card:hover {
+  background-color: var(--swaara-bg-elevated);
+  border-color: var(--swaara-border-hover);
+}
+
+/* Minimal Discrete Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.20);
+}
+
+/* Range input styling */
+input[type="range"] {
+  accent-color: #10B981;
+}
+
+/* Subtle Playing Animation */
+@keyframes subtleBar {
+  0%, 100% { height: 4px; }
+  50% { height: 13px; }
+}
+
+.animate-bar-1 { animation: subtleBar 0.9s ease-in-out infinite; }
+.animate-bar-2 { animation: subtleBar 0.7s ease-in-out infinite 0.15s; }
+.animate-bar-3 { animation: subtleBar 1.1s ease-in-out infinite 0.3s; }
+
+/* iOS Safe Area Inset Helpers */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+

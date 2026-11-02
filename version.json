@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "versionCode": 1,
+  "minRequiredVersion": "1.0",
+  "forceUpdate": false,
+  "title": "A1 Swaara v1.0 - Lossless Audio Engine & Sovereign Suite",
+  "changelog": "- Apple Music-grade Lossless Audio Engine: OPUS 251kbps and AAC 256kbps unthrottled peak bitrate stream selection\n- Audiophile ExoPlayer Rendering: 32-bit floating-point PCM audio output to hardware sinks and external DACs\n- Real-Time Quality Badges: Live dynamic badges (LOSSLESS, HI-RES LOSSLESS, MAXIMUM) showing active codec and bitrate in player\n- Pure Signal Path: Lossless mode bypasses dynamic DSP volume compression and silence skipping\n- Supabase Leaderboard Acceleration: High-speed batch profile resolution, fuzzy artist query matching, and local listening hours reconciliation\n- Expanded Playback Buffering: 4-minute (240s) safety pre-cache preventing high-bitrate streaming interruptions\n- Official v1.0 Sovereign Release: Unified ecosystem by @varshudev",
+  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.apk",
+  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.apk"
+}
