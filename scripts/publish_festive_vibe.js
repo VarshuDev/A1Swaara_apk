@@ -6,6 +6,7 @@
  * to all A1 Swaara clients via Cloud Firestore without requiring an APK update.
  *
  * Usage:
+ *   node scripts/publish_festive_vibe.js --preset rajyotsava
  *   node scripts/publish_festive_vibe.js --preset diwali
  *   node scripts/publish_festive_vibe.js --preset christmas
  *   node scripts/publish_festive_vibe.js --preset newyear
@@ -14,7 +15,7 @@
  *   node scripts/publish_festive_vibe.js --disable
  *
  * Custom Usage:
- *   node scripts/publish_festive_vibe.js --title "Grand Festive Drop" --message "Exclusive celebration acoustics" --accent "#FF9900" --secondary "#FF2DAA" --badge "FESTIVE SPECIAL" --image "https://example.com/festive.png" --action "diwali hits"
+ *   node scripts/publish_festive_vibe.js --title "Grand Festive Drop" --message "Exclusive celebration acoustics" --accent "#FF9900" --secondary "#FF2DAA" --badge "FESTIVE SPECIAL" --image "https://example.com/festive.png" --action "kannada hits"
  */
 
 const https = require('https');
@@ -27,7 +28,10 @@ function getArg(flag) {
 }
 
 const isDisable = args.includes('--disable') || args.includes('--off');
-const presetName = (getArg('--preset') || 'diwali').toLowerCase();
+let presetName = (getArg('--preset') || 'diwali').toLowerCase();
+if (['karnataka', 'kannada', 'karnataka_rajyotsava', 'rajyotsava'].includes(presetName)) {
+    presetName = 'rajyotsava';
+}
 
 const PRESETS = {
     diwali: {
@@ -89,6 +93,18 @@ const PRESETS = {
         actionText: 'Play Soulful Melodies',
         actionUrl: 'eid special songs',
         bannerImageUrl: 'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=240&auto=format&fit=crop&q=80'
+    },
+    rajyotsava: {
+        id: 'festive_rajyotsava_' + new Date().getFullYear(),
+        festivalName: 'Karnataka Rajyotsava',
+        title: 'Kannada Rajyotsava Sambhrama!',
+        message: 'Celebrate Kannada pride with iconic anthems, Dr. Rajkumar classics & lossless Sandalwood hits.',
+        badgeText: 'KANNADA RAJYOTSAVA',
+        accentColorHex: '#E50914',
+        secondaryColorHex: '#FFD700',
+        actionText: 'Play Kannada Hits',
+        actionUrl: 'kannada rajyotsava songs',
+        bannerImageUrl: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=240&auto=format&fit=crop&q=80'
     }
 };
 
