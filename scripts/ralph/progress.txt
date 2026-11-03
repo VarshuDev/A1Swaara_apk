@@ -1,25 +1,41 @@
 # Ralph Progress Log
-Started: 2026-10-28 20:06:00
+Started: 2026-11-03 16:35:00
+Branch: ralph/sovereign-leaderboard-and-notification-engine
 ---
 
 ## Codebase Patterns
-- Audio stream selection uses `audioStreamComparator` in `NewPipeExtractorClient.kt` (line 337).
-- Codec quality rank: MP3=0, WEBMA=1, M4A=2, OPUS=3. Comparator picks max (format rank, then bitrate).
-- ExoPlayer renderer built in `createRendersFactory()` in `PlayerService.kt`.
-- DefaultAudioSink with forced 32-bit float output passthrough on capable hardware.
-- Expanded playback buffers: 60s min, 240s max for uninterrupted high-bitrate streaming.
-- Silence threshold set to 0 in lossless mode to bypass silence skipping and preserve pristine signal paths.
-- Local files bypass network with `isLocal` check in `NewPipeAudioMediaSourceFactory.createMediaSource`.
-- Format entity enriched with `codec`, `sampleRate`, `channelCount`, and computed `qualityTier` / `codecDisplayName` / `bitrateDisplayText`.
-- Player UI (`SwaaraNowPlayingScreen.kt`) features real-time badge displaying live codec, bitrate, and quality tier.
+- Sovereign push engine in `SwaaraPushNotificationEngine.kt` checks Firestore `notifications/broadcast`.
+- System tray notifications dispatched via `ServiceNotifications.announcement` channel with high priority.
+- Android 13+ requires runtime `POST_NOTIFICATIONS` permission before calling `NotificationManager.notify`.
+- Supabase listening metrics recorded in `global_listening_stats` and `user_artist_stats`.
+- SharedPreferences `PREFS_LOCAL_STATS` buffers offline listening seconds and plays before user authentication.
+- Leaderboard screen `SwaaraLeaderboardScreen.kt` displays top listeners with real-time stats and avatar caching.
+- Build target: `./gradlew.bat --offline assembleHttp3Release`.
+- Distribution APK: `c:\Users\varshan\Downloads\projects\A1Swaara_apk\A1_Swaara_v1.0.apk`.
 
-## 2026-10-28 - US-001 through US-007: Lossless Audio Engine Complete (v1.1.4)
-- Added `PlayerPreferences.AudioQuality` with Maximum, Auto, High, Normal tiers and `losslessMode` toggle.
-- Modified `NewPipeExtractorClient.kt` stream selection logic to respect target bitrates and rank OPUS highest.
-- Configured audiophile ExoPlayer pipeline in `PlayerService.kt` with 32-bit float output and expanded buffering.
-- Implemented real-time dynamic audio badge in `SwaaraNowPlayingScreen.kt` for both streaming and local tracks.
-- Added dedicated Audio Quality configuration section in `PlayerSettings.kt`.
-- Bumped app version to 1.1.4 (versionCode 15).
-- Compiled release binary offline: `./gradlew.bat --offline assembleHttp3Release` (0 errors).
-- Generated release artifact: `A1_Swaara_v1.1.4.apk` (28.89 MB).
+## 2026-11-03 - US-001: Fix Notification Permission Race Condition Complete
+- Dispatched fresh broadcast to Firestore notifications/broadcast with ID broadcast_1793704014940 celebrating Karnataka Rajyotsava & Lossless Studio Audio.
+- Fixed SwaaraPushNotificationEngine so KEY_LAST_SHOWN_ID is only persisted if notification permission is actively granted.
+- Verified offline compilation (compileHttp3ReleaseKotlin BUILD SUCCESSFUL in 1m 21s).
+
+## 2026-11-03 - US-002: In-App Notification Center Complete
+- Added vector drawable ic_notification_bell.xml and integrated interactive notification button with unread badge in SwaaraHomeScreen.
+- Added modal dialog displaying active cloud broadcast, rich copy, action button, and read persistence.
+- Verified offline compilation (compileHttp3ReleaseKotlin BUILD SUCCESSFUL in 1m 14s).
+
+## 2026-11-03 - US-003: Synchronize Offline Artist Stats to Supabase Complete
+- Enhanced SwaaraTopListenerManager.syncLocalStatsOnSignIn to parse all local artist durations and play counts.
+- Batch-upserts artist listening records to user_artist_stats table and triggers sync during account login and account sync passes.
+- Verified offline compilation (compileHttp3ReleaseKotlin BUILD SUCCESSFUL in 1m 35s).
+
+## 2026-11-03 - US-004: Polish Leaderboard Screen Complete
+- Added distinctive gold, silver, and bronze podium borders and avatar rings for ranks 1, 2, and 3.
+- Added prominent YOU rank badge highlight for the authenticated listener.
+- Added interactive empty-state notice with one-tap suggestions for popular artist leaderboards.
+- Verified offline compilation (compileHttp3ReleaseKotlin BUILD SUCCESSFUL in 1m 39s).
+
+## 2026-11-03 - US-005: Compile Offline Release Binary and Deliver Sovereign APK Complete
+- Executed ./gradlew.bat --offline assembleHttp3Release with 0 compilation errors (BUILD SUCCESSFUL in 3m 45s).
+- Output binary: app-http3-release.apk (28.93 MB, 28,930,434 bytes).
+- Copied binary to A1Swaara_apk/A1_Swaara_v1.0.apk.
 <promise>COMPLETE</promise>
