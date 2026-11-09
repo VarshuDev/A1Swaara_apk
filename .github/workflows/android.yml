@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Validate version.json schema
         run: |
@@ -68,7 +68,7 @@ jobs:
           cat CHECKSUMS-SHA256.txt
 
       - name: Upload Checksums Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-checksums
           path: CHECKSUMS-SHA256.txt
