@@ -1,183 +1,819 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A1 Swaara - Lossless Audio Engine</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A1 Swaara v1.0.2 — Download Sovereign Music App for Android</title>
+  <meta name="description" content="Download A1 Swaara v1.0.2 APK (12.8 MB) for Android. Ad-free sovereign music streaming with Obsidian Neon Glass UI, synced lyrics, offline SWR feed, and gesture player." />
+  <meta name="theme-color" content="#08080C" />
+  <meta property="og:title" content="A1 Swaara v1.0.2 — Official Android APK" />
+  <meta property="og:description" content="Ad-free lossless & 320 kbps streaming, synced karaoke lyrics, offline feed caching, and Obsidian Neon Glass UI. 12.8 MB verified release build." />
+  <meta property="og:image" content="/icon.png" />
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #090d16;
-      --card: #131a29;
-      --card-border: #1f2a3f;
-      --text: #f0f4f8;
-      --text-muted: #8b9bb4;
-      --accent: #38bdf8;
-      --accent-hover: #0ea5e9;
-      --badge: #0284c7;
-      --badge-text: #e0f2fe;
+      --bg: #08080C;
+      --surface: #111119;
+      --surface-elevated: rgba(24, 24, 36, 0.78);
+      --border: rgba(255, 255, 255, 0.09);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #F7F7FC;
+      --text-muted: #A4A6BA;
+      --magenta: #FF2DAA;
+      --violet: #8B35FF;
+      --cyan: #20CFFF;
+      --emerald: #2CE69B;
+      --radius-lg: 24px;
+      --radius-md: 16px;
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      line-height: 1.6;
       min-height: 100vh;
-      padding: 2rem 1rem;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 70% 45% at 18% 0%, rgba(139, 53, 255, 0.22), transparent 65%),
+        radial-gradient(ellipse 65% 40% at 86% 6%, rgba(255, 45, 170, 0.16), transparent 65%),
+        radial-gradient(ellipse 50% 45% at 50% 95%, rgba(32, 207, 255, 0.09), transparent 70%);
     }
-    .container {
-      max-width: 680px;
-      width: 100%;
+
+    .shell {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 4rem;
     }
-    header {
-      text-align: center;
-      margin-bottom: 2.5rem;
+
+    /* Top Nav */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 2.25rem;
+      background: rgba(17, 17, 25, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
     }
-    .badge {
-      display: inline-block;
-      background: var(--badge);
-      color: var(--badge-text);
-      font-size: 0.75rem;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      color: var(--text);
       font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.85rem;
-      border-radius: 9999px;
-      margin-bottom: 1rem;
-    }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-      background: linear-gradient(135deg, #ffffff 0%, #38bdf8 100%);
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border-strong);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.18s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* Hero Card */
+    .hero {
+      position: relative;
+      background: linear-gradient(155deg, rgba(24, 24, 38, 0.92), rgba(14, 14, 22, 0.95));
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      box-shadow:
+        0 30px 80px -25px rgba(0, 0, 0, 0.75),
+        0 0 60px -25px rgba(139, 53, 255, 0.32);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--magenta), var(--violet), var(--cyan));
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: rgba(255, 45, 170, 0.14);
+      color: #FF7AD0;
+      border: 1px solid rgba(255, 45, 170, 0.35);
+    }
+
+    .badge-cyan {
+      background: rgba(32, 207, 255, 0.11);
+      color: #7CE3FF;
+      border-color: rgba(32, 207, 255, 0.28);
+    }
+
+    .badge-emerald {
+      background: rgba(44, 230, 155, 0.12);
+      color: var(--emerald);
+      border-color: rgba(44, 230, 155, 0.3);
+    }
+
+    h1 {
+      font-size: clamp(2.15rem, 4.5vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      margin-bottom: 0.85rem;
+      background: linear-gradient(135deg, #FFFFFF 10%, #E7D5FF 55%, #84E4FF 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    p.subtitle {
+
+    .hero-subtitle {
       color: var(--text-muted);
-      font-size: 1.125rem;
-      line-height: 1.6;
+      font-size: 1.06rem;
+      max-width: 560px;
+      margin-bottom: 1.75rem;
     }
-    .download-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: 2rem;
-      text-align: center;
-      margin-bottom: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-bottom: 1.35rem;
     }
-    .btn-download {
+
+    .btn-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: var(--accent);
-      color: #031120;
-      font-size: 1.125rem;
+      gap: 0.65rem;
+      min-height: 54px;
+      padding: 0.9rem 1.75rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--magenta) 0%, var(--violet) 100%);
+      color: #FFFFFF;
       font-weight: 700;
+      font-size: 1rem;
       text-decoration: none;
-      padding: 1rem 2.25rem;
-      border-radius: 0.75rem;
-      margin: 1rem 0 0.75rem;
-      transition: all 0.2s ease;
-      width: 100%;
-      max-width: 360px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 30px -8px rgba(255, 45, 170, 0.52);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
     }
-    .btn-download:hover {
-      background: var(--accent-hover);
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -6px rgba(139, 53, 255, 0.62);
+      filter: brightness(1.06);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 54px;
+      padding: 0.9rem 1.35rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid var(--border-strong);
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(32, 207, 255, 0.45);
       transform: translateY(-1px);
     }
-    .meta {
-      font-size: 0.85rem;
+
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1.25rem;
+      font-size: 0.86rem;
       color: var(--text-muted);
-      margin-top: 0.5rem;
     }
-    .features-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: 1.75rem;
-      margin-bottom: 2rem;
+
+    .meta-strip span strong {
+      color: var(--text);
+      font-weight: 600;
     }
-    .features-card h2 {
-      font-size: 1.25rem;
+
+    /* Right side Spec Box */
+    .spec-panel {
+      background: rgba(10, 10, 16, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .app-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.95rem;
+    }
+
+    .app-identity img {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
+      border: 1px solid var(--border-strong);
+      flex-shrink: 0;
+    }
+
+    .app-identity-text h2 {
+      font-size: 1.15rem;
       font-weight: 700;
-      margin-bottom: 1rem;
-      color: #ffffff;
+      margin-bottom: 0.15rem;
     }
-    ul.changelog-list {
-      list-style: none;
-    }
-    ul.changelog-list li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.75rem;
+
+    .app-identity-text p {
+      font-size: 0.84rem;
       color: var(--text-muted);
-      line-height: 1.5;
-      font-size: 0.95rem;
     }
-    ul.changelog-list li::before {
-      content: "-";
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-weight: bold;
+
+    .spec-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
     }
-    ul.changelog-list li strong {
+
+    .spec-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.65rem 0.8rem;
+    }
+
+    .spec-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .spec-value {
+      font-size: 0.9rem;
+      font-weight: 600;
       color: var(--text);
     }
-    footer {
-      text-align: center;
-      font-size: 0.8rem;
+
+    .checksum-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+    }
+
+    .checksum-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
-      margin-top: auto;
-      padding-top: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .copy-btn {
+      background: rgba(32, 207, 255, 0.14);
+      color: var(--cyan);
+      border: 1px solid rgba(32, 207, 255, 0.32);
+      border-radius: 999px;
+      padding: 0.18rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(32, 207, 255, 0.24);
+    }
+
+    .checksum-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.73rem;
+      color: #D2D5E8;
+      word-break: break-all;
+      line-height: 1.45;
+    }
+
+    /* Two Column Details */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .panel {
+      background: var(--surface-elevated);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.6rem;
+    }
+
+    .panel h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .changelog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .changelog-list li {
+      position: relative;
+      padding-left: 1.35rem;
+      font-size: 0.92rem;
+      color: #DCE0F2;
+    }
+
+    .changelog-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.52rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--magenta), var(--cyan));
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: rgba(139, 53, 255, 0.22);
+      border: 1px solid rgba(139, 53, 255, 0.45);
+      color: #DEC8FF;
+      font-weight: 700;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .step p strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 0.1rem;
+      font-size: 0.93rem;
+    }
+
+    /* Feature Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .feature-card {
+      background: rgba(17, 17, 25, 0.78);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.3rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(139, 53, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .feature-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.45rem;
+    }
+
+    .feature-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .topbar {
+        padding: 0.65rem 0.9rem;
+      }
+
+      .nav-links {
+        gap: 0.8rem;
+        font-size: 0.82rem;
+      }
+
+      .hero {
+        padding: 1.65rem 1.25rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="badge">Official Release v1.1.4</div>
-      <h1>A1 Swaara</h1>
-      <p class="subtitle">Lossless Audio Engine with 32-bit floating-point DAC rendering and real-time audio quality badges.</p>
-    </header>
-
-    <div class="download-card">
-      <h2 style="font-size: 1.35rem; margin-bottom: 0.25rem;">Download v1.1.4 APK</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Compatible with Android 8.0 and above</p>
-      
-      <a class="btn-download" href="/A1_Swaara_v1.1.4.apk" download>
-        Download APK (28.9 MB)
+  <div class="shell">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="#top">
+        <img src="/icon.png" alt="A1 Swaara Icon" onerror="this.src='https://github.com/VarshuDev/A1Swaara_apk/raw/main/icon.png'" />
+        <span>A1 Swaara</span>
       </a>
-
-      <div class="meta">
-        Version 1.1.4 (Code 15) &bull; Verified Offline Build &bull; High-Fidelity Audio Pipeline
+      <div class="nav-links">
+        <a href="#whats-new">Changelog</a>
+        <a href="#install">Install Guide</a>
+        <a href="https://github.com/VarshuDev/A1Swaara_apk/releases" target="_blank" rel="noopener">Releases</a>
+        <a href="https://github.com/VarshuDev/A1Swaara" target="_blank" rel="noopener">GitHub</a>
       </div>
-    </div>
+    </nav>
 
-    <div class="features-card">
-      <h2>What is New in v1.1.4</h2>
-      <ul class="changelog-list">
-        <li><strong>Apple Music-Grade Lossless Audio Engine:</strong> Prioritizes high-bitrate OPUS (251kbps) and AAC (256kbps) streaming pipelines without transcoding.</li>
-        <li><strong>32-Bit Float PCM Rendering:</strong> EXOPlayer feeds 32-bit floating-point PCM directly to device DACs and external USB DAC converters.</li>
-        <li><strong>Real-Time Dynamic Audio Badges:</strong> Live player badges (LOSSLESS, HI-RES LOSSLESS, MAXIMUM) display active codec and bitrate metrics.</li>
-        <li><strong>Expanded Playback Cache:</strong> Pre-caches up to 240 seconds of high-fidelity streams to eliminate buffering on variable connections.</li>
-        <li><strong>Pure Audio Signal Path:</strong> Lossless mode bypasses dynamic volume compression and silence skipping.</li>
-        <li><strong>Supabase Leaderboard Fix:</strong> Single-pass batch profile resolution, fuzzy artist query filtering, and local listening hours synchronization.</li>
-      </ul>
-    </div>
+    <main id="top">
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <div class="pill-row">
+              <span class="badge" id="versionBadge">Official Release v1.0.2</span>
+              <span class="badge badge-cyan" id="sizeBadge">12.81 MB R8 Build</span>
+              <span class="badge badge-emerald">Ad-Free &amp; Sovereign</span>
+            </div>
+
+            <h1 id="heroHeading">Pure Music. Zero Interruptions.</h1>
+            <p class="hero-subtitle" id="heroSubtitle">
+              High-fidelity 320 kbps audio streaming with an Obsidian Neon Glass player, spring-gesture Now Playing sheet, synced karaoke lyrics, and offline SWR caching for Android.
+            </p>
+
+            <div class="cta-group">
+              <a class="btn-primary" id="primaryDownloadBtn" href="/A1_Swaara_v1.0.2.apk" download="A1_Swaara_v1.0.2.apk">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span id="downloadBtnLabel">Download APK · v1.0.2 (12.8 MB)</span>
+              </a>
+
+              <a class="btn-secondary" id="mirrorDownloadBtn" href="https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk" target="_blank" rel="noopener">
+                GitHub Mirror APK
+              </a>
+            </div>
+
+            <div class="meta-strip">
+              <span><strong>Version:</strong> <span id="metaVersion">1.0.2 (Code 3)</span></span>
+              <span><strong>Compatibility:</strong> <span id="metaAndroid">Android 6.0+ (API 23)</span></span>
+              <span><strong>Build:</strong> R8 Optimized Release</span>
+            </div>
+          </div>
+
+          <aside class="spec-panel" aria-label="APK Package Verification">
+            <div class="app-identity">
+              <img src="/icon.png" alt="A1 Swaara App Icon" onerror="this.src='https://github.com/VarshuDev/A1Swaara_apk/raw/main/icon.png'" />
+              <div class="app-identity-text">
+                <h2>A1_Swaara_v1.0.2.apk</h2>
+                <p id="buildTitle">Flagship Performance &amp; Gesture Player</p>
+              </div>
+            </div>
+
+            <div class="spec-list">
+              <div class="spec-item">
+                <div class="spec-label">Package Size</div>
+                <div class="spec-value" id="specSize">12.81 MB</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-label">Version Code</div>
+                <div class="spec-value" id="specCode">v1.0.2 (#3)</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-label">Audio Engine</div>
+                <div class="spec-value">320 kbps / EQ DSP</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-label">Telemetry</div>
+                <div class="spec-value">Zero Trackers</div>
+              </div>
+            </div>
+
+            <div class="checksum-box">
+              <div class="checksum-head">
+                <span>SHA-256 Checksum</span>
+                <button type="button" class="copy-btn" id="copyShaBtn">Copy</button>
+              </div>
+              <div class="checksum-code" id="sha256Value">3fa4f777799619f32b8ffe76d22ada2dd9a2ed5314ac7288009f195078f5a7e1</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="two-col">
+        <div class="panel" id="whats-new">
+          <h3>What's New in <span id="changelogVersion">v1.0.2</span></h3>
+          <ul class="changelog-list" id="changelogList">
+            <li>Enabled R8 shrinking and resource optimization, reducing APK size from ~28.8 MB to 12.8 MB.</li>
+            <li>Fixed returning-user cold startup: skips blocking splash and moves heavy initialization off the main thread.</li>
+            <li>Fixed language onboarding singer portraits to load live YouTube Music artist artwork with neon monogram fallbacks.</li>
+            <li>Kept Mini-Player and 5-tab Navigation Bar persistent across Album, Artist, Playlist, and Mood detail screens.</li>
+            <li>Upgraded Now Playing to a spring-animated drag sheet with swipe-up Mini-Player open and swipe-down dismiss.</li>
+            <li>Added Stale-While-Revalidate disk caching on Home with parallel fetches and non-destructive offline retry states.</li>
+            <li>Added live Moods &amp; Genres browse grid, loading shimmers, deletable recent searches, and Retry UI in Search.</li>
+            <li>Added actionable Retry and Skip Next recovery buttons on playback errors and one-tap crash recovery diagnostics.</li>
+          </ul>
+        </div>
+
+        <div class="panel" id="install">
+          <h3>Quick Android Install</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <p>
+                <strong>Download the Verified APK</strong>
+                Tap the primary download button (or the GitHub Mirror if your network blocks direct APK downloads).
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <p>
+                <strong>Allow Browser APK Installs</strong>
+                Open the downloaded <code>A1_Swaara_v1.0.2.apk</code> file. If Android prompts once, enable <em>Install unknown apps</em> for your browser or Files app.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <p>
+                <strong>Launch &amp; Tune Your Languages</strong>
+                Pick your preferred music languages on first launch. Returning users go straight into the Home feed with zero splash delay.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-grid" aria-label="Flagship highlights">
+        <article class="feature-card">
+          <div class="feature-tag">Performance</div>
+          <h4>Instant Cold Launch</h4>
+          <p>R8-shrunk 12.8 MB package with cached SWR Home sections ready immediately, even on flaky mobile connections.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-tag">Gestures &amp; UI</div>
+          <h4>Spring Drag Player</h4>
+          <p>Swipe up from the persistent Mini-Player anywhere in the app to open Now Playing, and drag down to dismiss.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-tag">Resilience</div>
+          <h4>Zero-Dead-End Playback</h4>
+          <p>Built-in playback error Retry and Skip Next controls plus an in-app crash diagnostic screen so music never stalls.</p>
+        </article>
+      </section>
+    </main>
 
     <footer>
-      A1 Swaara Sovereign Audio Architecture &bull; raaga-music-8e1f2
+      <div>A1 Swaara &bull; Open Source Sovereign Audio Suite</div>
+      <div class="footer-links">
+        <a href="/A1_Swaara_latest.apk" id="permalinkBtn" download="A1_Swaara_latest.apk">Latest Permalink APK</a>
+        <a href="/version.json" target="_blank" rel="noopener">OTA Manifest (version.json)</a>
+        <a href="https://github.com/VarshuDev/A1Swaara" target="_blank" rel="noopener">Android Source</a>
+        <a href="https://github.com/VarshuDev/A1Swaara_apk" target="_blank" rel="noopener">Release Repository</a>
+      </div>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      const shaEl = document.getElementById('sha256Value');
+      const copyBtn = document.getElementById('copyShaBtn');
+
+      if (window.location.protocol === 'file:') {
+        const mirror = 'https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk';
+        document.getElementById('primaryDownloadBtn').href = mirror;
+        document.getElementById('permalinkBtn').href = mirror;
+      }
+
+      copyBtn.addEventListener('click', async function () {
+        const text = shaEl.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1800);
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(shaEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          document.execCommand('copy');
+          sel.removeAllRanges();
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1800);
+        }
+      });
+
+      fetch('./version.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(res => (res.ok ? res.json() : null))
+        .then(data => {
+          if (!data || !data.version) return;
+          const ver = data.version;
+          const code = data.versionCode || '';
+          const sizeLabel = data.sizeLabel || '12.81 MB';
+          const shortSize = sizeLabel.replace(/(\.\d)\d/, '$1');
+
+          document.getElementById('versionBadge').textContent = 'Official Release v' + ver;
+          document.getElementById('sizeBadge').textContent = sizeLabel + ' R8 Build';
+          document.getElementById('downloadBtnLabel').textContent = 'Download APK \u00B7 v' + ver + ' (' + shortSize + ')';
+          document.getElementById('metaVersion').textContent = ver + (code ? ' (Code ' + code + ')' : '');
+          document.getElementById('specSize').textContent = sizeLabel;
+          document.getElementById('specCode').textContent = 'v' + ver + (code ? ' (#' + code + ')' : '');
+          document.getElementById('changelogVersion').textContent = 'v' + ver;
+          if (data.minAndroid) {
+            document.getElementById('metaAndroid').textContent = data.minAndroid;
+          }
+          if (data.sha256) {
+            shaEl.textContent = data.sha256;
+          }
+
+          if (data.downloadUrl && window.location.protocol !== 'file:') {
+            try {
+              const u = new URL(data.downloadUrl);
+              if (u.origin === window.location.origin) {
+                const btn = document.getElementById('primaryDownloadBtn');
+                btn.href = u.pathname;
+                btn.setAttribute('download', 'A1_Swaara_v' + ver + '.apk');
+              }
+            } catch {}
+          }
+          if (data.mirrorDownloadUrl) {
+            document.getElementById('mirrorDownloadBtn').href = data.mirrorDownloadUrl;
+          }
+
+          if (typeof data.changelog === 'string' && data.changelog.trim()) {
+            const items = data.changelog
+              .split('\n')
+              .map(line => line.replace(/^[-*]\s*/, '').trim())
+              .filter(Boolean);
+            if (items.length) {
+              const list = document.getElementById('changelogList');
+              list.innerHTML = '';
+              items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                list.appendChild(li);
+              });
+            }
+          }
+        })
+        .catch(() => {
+          // Keep baked-in v1.0.2 metadata when opened locally or offline
+        });
+    })();
+  </script>
 </body>
 </html>
