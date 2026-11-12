@@ -9,6 +9,6 @@
   "minAndroid": "Android 6.0+ (API 23)",
   "sha256": "3fa4f777799619f32b8ffe76d22ada2dd9a2ed5314ac7288009f195078f5a7e1",
   "changelog": "- Enabled R8 shrinking and resource optimization, reducing APK size from ~28.8 MB to 12.8 MB\n- Fixed returning-user cold startup: skips blocking splash and moves heavy initialization off the main thread\n- Fixed language onboarding singer portraits to load live YouTube Music artist artwork with neon monogram fallbacks\n- Kept Mini-Player and 5-tab Navigation Bar persistent across Album, Artist, Playlist, and Mood detail screens\n- Upgraded Now Playing to a spring-animated drag sheet with swipe-up Mini-Player open and swipe-down dismiss\n- Added Stale-While-Revalidate disk caching on Home with parallel fetches and non-destructive offline retry states\n- Added live Moods & Genres browse grid, loading shimmers, deletable recent searches, and Retry UI in Search\n- Added actionable Retry and Skip Next recovery buttons on playback errors and one-tap crash recovery diagnostics",
-  "downloadUrl": "https://raaga-music-8e1f2.web.app/A1_Swaara_v1.0.2.apk",
-  "mirrorDownloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk"
+  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk",
+  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.2.apk"
 }

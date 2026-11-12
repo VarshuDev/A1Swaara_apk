@@ -594,7 +594,7 @@
             </p>
 
             <div class="cta-group">
-              <a class="btn-primary" id="primaryDownloadBtn" href="/A1_Swaara_v1.0.2.apk" download="A1_Swaara_v1.0.2.apk">
+              <a class="btn-primary" id="primaryDownloadBtn" href="https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk" download="A1_Swaara_v1.0.2.apk">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                   <polyline points="7 10 12 15 17 10"/>
@@ -603,8 +603,8 @@
                 <span id="downloadBtnLabel">Download APK · v1.0.2 (12.8 MB)</span>
               </a>
 
-              <a class="btn-secondary" id="mirrorDownloadBtn" href="https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk" target="_blank" rel="noopener">
-                GitHub Mirror APK
+              <a class="btn-secondary" id="mirrorDownloadBtn" href="https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.2.apk" download="A1_Swaara_v1.0.2.apk">
+                Fallback Mirror APK
               </a>
             </div>
 
@@ -719,7 +719,7 @@
     <footer>
       <div>A1 Swaara &bull; Open Source Sovereign Audio Suite</div>
       <div class="footer-links">
-        <a href="/A1_Swaara_latest.apk" id="permalinkBtn" download="A1_Swaara_latest.apk">Latest Permalink APK</a>
+        <a href="https://github.com/VarshuDev/A1Swaara_apk/releases" target="_blank" rel="noopener">All Releases</a>
         <a href="/version.json" target="_blank" rel="noopener">OTA Manifest (version.json)</a>
         <a href="https://github.com/VarshuDev/A1Swaara" target="_blank" rel="noopener">Android Source</a>
         <a href="https://github.com/VarshuDev/A1Swaara_apk" target="_blank" rel="noopener">Release Repository</a>
@@ -731,12 +731,6 @@
     (function () {
       const shaEl = document.getElementById('sha256Value');
       const copyBtn = document.getElementById('copyShaBtn');
-
-      if (window.location.protocol === 'file:') {
-        const mirror = 'https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk';
-        document.getElementById('primaryDownloadBtn').href = mirror;
-        document.getElementById('permalinkBtn').href = mirror;
-      }
 
       copyBtn.addEventListener('click', async function () {
         const text = shaEl.textContent.trim();
@@ -780,15 +774,10 @@
             shaEl.textContent = data.sha256;
           }
 
-          if (data.downloadUrl && window.location.protocol !== 'file:') {
-            try {
-              const u = new URL(data.downloadUrl);
-              if (u.origin === window.location.origin) {
-                const btn = document.getElementById('primaryDownloadBtn');
-                btn.href = u.pathname;
-                btn.setAttribute('download', 'A1_Swaara_v' + ver + '.apk');
-              }
-            } catch {}
+          if (data.downloadUrl) {
+            const btn = document.getElementById('primaryDownloadBtn');
+            btn.href = data.downloadUrl;
+            btn.setAttribute('download', 'A1_Swaara_v' + ver + '.apk');
           }
           if (data.mirrorDownloadUrl) {
             document.getElementById('mirrorDownloadBtn').href = data.mirrorDownloadUrl;
