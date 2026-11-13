@@ -1,14 +1,14 @@
 {
-  "version": "1.0.2",
-  "versionCode": 3,
+  "version": "1.0.3",
+  "versionCode": 4,
   "minRequiredVersion": "1.0",
   "forceUpdate": false,
-  "title": "A1 Swaara v1.0.2 - Flagship Performance, SWR Offline Feed & Gesture Player",
-  "sizeBytes": 13434406,
+  "title": "A1 Swaara v1.0.3 - Android 16 Background & Media Button Stability Fix",
+  "sizeBytes": 13434452,
   "sizeLabel": "12.81 MB",
   "minAndroid": "Android 6.0+ (API 23)",
-  "sha256": "3fa4f777799619f32b8ffe76d22ada2dd9a2ed5314ac7288009f195078f5a7e1",
-  "changelog": "- Enabled R8 shrinking and resource optimization, reducing APK size from ~28.8 MB to 12.8 MB\n- Fixed returning-user cold startup: skips blocking splash and moves heavy initialization off the main thread\n- Fixed language onboarding singer portraits to load live YouTube Music artist artwork with neon monogram fallbacks\n- Kept Mini-Player and 5-tab Navigation Bar persistent across Album, Artist, Playlist, and Mood detail screens\n- Upgraded Now Playing to a spring-animated drag sheet with swipe-up Mini-Player open and swipe-down dismiss\n- Added Stale-While-Revalidate disk caching on Home with parallel fetches and non-destructive offline retry states\n- Added live Moods & Genres browse grid, loading shimmers, deletable recent searches, and Retry UI in Search\n- Added actionable Retry and Skip Next recovery buttons on playback errors and one-tap crash recovery diagnostics",
-  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.2.apk",
-  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.2.apk"
+  "sha256": "e01626d384f1ffc8ce2ca3b08e97a61f47dcdc5875d3ced8f3483430bd7420cb",
+  "changelog": "- Fixed ForegroundServiceDidNotStartInTimeException on Android 14/15/16 when receiving media button broadcasts, connecting Bluetooth headsets, or waking from background\n- Added synchronous foreground service dispatch in ServiceNotifications without main looper queue delay\n- Added guaranteed standby foreground notification and onStartCommand lifecycle handling even before songs are loaded into the player\n- Prevented invincibility loops when player queue is empty\n- Verified 12.81 MB R8-optimized release package",
+  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.3.apk",
+  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.3.apk"
 }

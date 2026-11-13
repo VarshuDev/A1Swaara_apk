@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge&logo=gnu&logoColor=white" alt="License GPLv3" /></a>
-  <a href="https://github.com/VarshuDev/A1Swaara_apk/releases"><img src="https://img.shields.io/badge/Release-v1.0.2%20(Latest)-FF2DAA?style=for-the-badge&logo=android&logoColor=white" alt="Latest Release" /></a>
+  <a href="https://github.com/VarshuDev/A1Swaara_apk/releases"><img src="https://img.shields.io/badge/Release-v1.0.3%20(Latest)-FF2DAA?style=for-the-badge&logo=android&logoColor=white" alt="Latest Release" /></a>
   <a href="#-downloads--releases"><img src="https://img.shields.io/badge/Platform-Android%20%7C%20Windows%20PC-20CFFF?style=for-the-badge&logo=windows&logoColor=white" alt="Platforms" /></a>
   <a href="#-audio-dsp-pipeline"><img src="https://img.shields.io/badge/Audio-320%20kbps%20Lossless-7F52FF?style=for-the-badge" alt="Audio Quality" /></a>
   <a href="https://github.com/VarshuDev"><img src="https://img.shields.io/badge/Author-%40VarshuDev-38bdf8?style=for-the-badge&logo=github&logoColor=white" alt="Author" /></a>
@@ -48,10 +48,10 @@ Built with an **obsidian glass aesthetic** (`#07080D`), A1 Swaara bridges the ga
 <table width="100%">
   <tr>
     <td width="50%">
-      <h3>📱 Android APK (v1.0.2)</h3>
+      <h3>📱 Android APK (v1.0.3)</h3>
       <p>Direct standalone APK package optimized for modern ARM64 &amp; x86 Android devices:</p>
       <ul>
-        <li><strong>Direct APK Download</strong>: <a href="A1_Swaara_v1.0.2.apk"><code>A1_Swaara_v1.0.2.apk</code></a> (~12.8 MB)</li>
+        <li><strong>Direct APK Download</strong>: <a href="A1_Swaara_v1.0.3.apk"><code>A1_Swaara_v1.0.3.apk</code></a> (~12.8 MB)</li>
         <li><strong>OTA Configuration</strong>: <a href="version.json"><code>version.json</code></a></li>
         <li><strong>Release Channel</strong>: <a href="https://github.com/VarshuDev/A1Swaara_apk/releases">GitHub Releases</a></li>
       </ul>
