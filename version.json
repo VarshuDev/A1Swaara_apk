@@ -1,14 +1,14 @@
 {
-  "version": "1.0.3",
-  "versionCode": 4,
+  "version": "1.0.4",
+  "versionCode": 5,
   "minRequiredVersion": "1.0",
   "forceUpdate": false,
-  "title": "A1 Swaara v1.0.3 - Android 16 Background & Media Button Stability Fix",
-  "sizeBytes": 13434452,
-  "sizeLabel": "12.81 MB",
+  "title": "A1 Swaara v1.0.4 - Swaara Connect, Studio Master Visualizer & Smart Stash",
+  "sizeBytes": 13467248,
+  "sizeLabel": "12.84 MB",
   "minAndroid": "Android 6.0+ (API 23)",
-  "sha256": "e01626d384f1ffc8ce2ca3b08e97a61f47dcdc5875d3ced8f3483430bd7420cb",
-  "changelog": "- Fixed ForegroundServiceDidNotStartInTimeException on Android 14/15/16 when receiving media button broadcasts, connecting Bluetooth headsets, or waking from background\n- Added synchronous foreground service dispatch in ServiceNotifications without main looper queue delay\n- Added guaranteed standby foreground notification and onStartCommand lifecycle handling even before songs are loaded into the player\n- Prevented invincibility loops when player queue is empty\n- Verified 12.81 MB R8-optimized release package",
-  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.3.apk",
-  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.3.apk"
+  "sha256": "2ab0e8c35630271d801d730b75b578bc141f4073e6ef2839537abc40d950abd5",
+  "changelog": "- Swaara Connect: Seamless cross-device audio handoff & remote control between Android, Windows PC, and Web\n- Studio Master Visualizer: 60 FPS hardware/procedural Neon FFT Spectrum, Fluid Waveform, Dual Analog VU needle meters, and Master DAC telemetry\n- Analog Tube Warmth & Real-Time Karaoke Vocal Suppressor DSP toggles inside Studio Master mode\n- Autonomous Smart Stash: Silent background precaching of top rotation tracks when on unmetered Wi-Fi and charging\n- Verified 12.84 MB R8-optimized release package",
+  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.4.apk",
+  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.4.apk"
 }

@@ -19,6 +19,13 @@ import { resolveTrackStream, fetchLyrics, fetchRadioTracks } from './services/ap
 import { audioEngine, DEFAULT_PRESETS } from './services/audioEngine';
 import { getSmartNextTracks } from './services/algorithm';
 import * as storage from './services/storage';
+import {
+  ConnectDevice,
+  fetchActiveRemoteDevices,
+  pollIncomingConnectCommand,
+  publishDesktopPresence,
+  sendRemotePauseToDevice,
+} from './services/connectService';
 import { CheckCircle2, Download, Radio, Sparkles } from 'lucide-react';
 
 export function App() {
@@ -71,6 +78,7 @@ export function App() {
     isLoading?: boolean;
   }>({ text: '', synced: [], isLoading: false });
   const [isDownloading, setIsDownloading] = useState(false);
+  const [remoteConnectDevice, setRemoteConnectDevice] = useState<ConnectDevice | null>(null);
   const [contextMenu, setContextMenu] = useState<{
     position: { x: number; y: number };
     track: Track;
@@ -96,6 +104,10 @@ export function App() {
   historySongsRef.current = historySongs;
   const likedSongsRef = useRef(likedSongs);
   likedSongsRef.current = likedSongs;
+  const isPlayingRef = useRef(isPlaying);
+  isPlayingRef.current = isPlaying;
+  const currentTimeRef = useRef(currentTime);
+  currentTimeRef.current = currentTime;
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -440,6 +452,82 @@ export function App() {
       });
     }
   }, []);
+
+  // Swaara Connect: Cross-Device Presence & Instant Handoff (Mobile <-> PC <-> Web)
+  useEffect(() => {
+    let cancelled = false;
+    const syncConnect = async () => {
+      const track = currentTrackRef.current;
+      await publishDesktopPresence({
+        songId: track?.id || '',
+        title: track?.title || '',
+        artist: track?.artist || '',
+        artworkUrl: track?.artwork || '',
+        positionMs: Math.floor((currentTimeRef.current || 0) * 1000),
+        isPlaying: isPlayingRef.current,
+      });
+
+      const cmd = await pollIncomingConnectCommand();
+      if (!cancelled && cmd) {
+        if (cmd.command === 'TRANSFER_PLAY' && cmd.songId) {
+          const handoffTrack: Track = {
+            id: cmd.songId,
+            title: cmd.title || 'Swaara Track',
+            artist: cmd.artist || 'Artist',
+            duration: 0,
+            artwork: cmd.artworkUrl || `https://i.ytimg.com/vi/${cmd.songId}/maxresdefault.jpg`,
+            source: 'swaara',
+          };
+          showToast(`Swaara Connect: Handed off "${handoffTrack.title}" to this PC ⚡`);
+          await handlePlayTrack(handoffTrack, false);
+          if (cmd.positionMs > 1500) {
+            setTimeout(() => audioEngine.seek(cmd.positionMs / 1000), 1200);
+          }
+        } else if (cmd.command === 'REMOTE_PAUSE') {
+          if (isPlayingRef.current) audioEngine.togglePlay();
+        } else if (cmd.command === 'REMOTE_PLAY') {
+          if (!isPlayingRef.current) audioEngine.togglePlay();
+        } else if (cmd.command === 'REMOTE_NEXT') {
+          handleNext();
+        } else if (cmd.command === 'REMOTE_PREV') {
+          handlePrev();
+        } else if (cmd.command === 'REMOTE_SEEK') {
+          audioEngine.seek(cmd.positionMs / 1000);
+        }
+      }
+
+      const remotes = await fetchActiveRemoteDevices();
+      if (!cancelled) {
+        const playingPhone = remotes.find((d) => d.isPlaying && d.currentSongId);
+        setRemoteConnectDevice(playingPhone || null);
+      }
+    };
+
+    syncConnect();
+    const interval = setInterval(syncConnect, 6000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleTakeOverFromRemote = async (device: ConnectDevice) => {
+    const track: Track = {
+      id: device.currentSongId,
+      title: device.currentTitle || 'Swaara Track',
+      artist: device.currentArtist || 'Artist',
+      duration: 0,
+      artwork: device.artworkUrl || `https://i.ytimg.com/vi/${device.currentSongId}/maxresdefault.jpg`,
+      source: 'swaara',
+    };
+    setRemoteConnectDevice(null);
+    sendRemotePauseToDevice(device.deviceId);
+    showToast(`Switched playback from ${device.deviceName} ⚡`);
+    await handlePlayTrack(track, false);
+    if (device.positionMs > 1500) {
+      setTimeout(() => audioEngine.seek(device.positionMs / 1000), 1200);
+    }
+  };
 
   // Toggle Like
   const handleToggleLike = (trackToToggle?: Track) => {
@@ -965,6 +1053,23 @@ export function App() {
           onOpenArtist={handleOpenArtist}
           onStartRadio={handleStartRadio}
         />
+      )}
+
+      {/* Swaara Connect Cross-Device Handoff Pill */}
+      {remoteConnectDevice && remoteConnectDevice.currentSongId !== currentTrack?.id && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#0E0F19]/95 border border-[#FF2DAA]/45 shadow-[0_0_24px_rgba(255,45,170,0.28)] backdrop-blur-xl text-white text-xs animate-slideUp">
+          <span className="inline-block size-2 rounded-full bg-[#2CE69B] animate-pulse" />
+          <span className="text-white/80">
+            Listening on <strong className="text-white">{remoteConnectDevice.deviceName}</strong>
+            {remoteConnectDevice.currentTitle ? ` • ${remoteConnectDevice.currentTitle}` : ''}
+          </span>
+          <button
+            onClick={() => handleTakeOverFromRemote(remoteConnectDevice)}
+            className="px-3 py-1 rounded-full bg-gradient-to-r from-[#FF2DAA] to-[#8B35FF] text-white font-semibold hover:brightness-110 transition cursor-pointer"
+          >
+            Switch Here
+          </button>
+        </div>
       )}
 
       {/* Floating Status Toast */}
