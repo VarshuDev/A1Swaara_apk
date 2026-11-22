@@ -1,14 +1,14 @@
 {
-  "version": "1.0.4",
-  "versionCode": 5,
+  "version": "1.0.5",
+  "versionCode": 6,
   "minRequiredVersion": "1.0",
   "forceUpdate": false,
-  "title": "A1 Swaara v1.0.4 - Swaara Connect, Studio Master Visualizer & Smart Stash",
-  "sizeBytes": 13467248,
+  "title": "A1 Swaara v1.0.5 - Flagship Editorial Redesign & Slop Cleanup",
+  "sizeBytes": 13468120,
   "sizeLabel": "12.84 MB",
   "minAndroid": "Android 6.0+ (API 23)",
-  "sha256": "2ab0e8c35630271d801d730b75b578bc141f4073e6ef2839537abc40d950abd5",
-  "changelog": "- Swaara Connect: Seamless cross-device audio handoff & remote control between Android, Windows PC, and Web\n- Studio Master Visualizer: 60 FPS hardware/procedural Neon FFT Spectrum, Fluid Waveform, Dual Analog VU needle meters, and Master DAC telemetry\n- Analog Tube Warmth & Real-Time Karaoke Vocal Suppressor DSP toggles inside Studio Master mode\n- Autonomous Smart Stash: Silent background precaching of top rotation tracks when on unmetered Wi-Fi and charging\n- Verified 12.84 MB R8-optimized release package",
-  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.4.apk",
-  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.4.apk"
+  "sha256": "401aadb43632fd63fabda698831becd5aca3df57575fc3f1d3d85a21f6701a8d",
+  "changelog": "- Flagship Editorial Redesign: Removed all artificial gradient borders, glowing avatar rings, and visual clutter across every screen\n- Premium Surfaces: Calm hierarchy using Obsidian Deep and Elevated surfaces, solid brand-moment actions, and typography contrast\n- Cleaned Components: Streamlined Equalizer, Studio Effects, Loop Counter, Dedications, Cloud Sync, and Jam Session dialogs\n- Universal Artworks: Flat, modern album and playlist cover styling matching top-tier music streaming apps\n- Verified 12.84 MB R8-optimized release package",
+  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.5.apk",
+  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.5.apk"
 }
