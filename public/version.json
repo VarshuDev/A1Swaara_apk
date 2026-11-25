@@ -1,14 +1,14 @@
-{
-  "version": "1.0.5",
-  "versionCode": 6,
-  "minRequiredVersion": "1.0",
-  "forceUpdate": false,
-  "title": "A1 Swaara v1.0.5 - Flagship Editorial Redesign & Slop Cleanup",
-  "sizeBytes": 13468120,
-  "sizeLabel": "12.84 MB",
-  "minAndroid": "Android 6.0+ (API 23)",
-  "sha256": "401aadb43632fd63fabda698831becd5aca3df57575fc3f1d3d85a21f6701a8d",
-  "changelog": "- Flagship Editorial Redesign: Removed all artificial gradient borders, glowing avatar rings, and visual clutter across every screen\n- Premium Surfaces: Calm hierarchy using Obsidian Deep and Elevated surfaces, solid brand-moment actions, and typography contrast\n- Cleaned Components: Streamlined Equalizer, Studio Effects, Loop Counter, Dedications, Cloud Sync, and Jam Session dialogs\n- Universal Artworks: Flat, modern album and playlist cover styling matching top-tier music streaming apps\n- Verified 12.84 MB R8-optimized release package",
-  "downloadUrl": "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.5.apk",
-  "mirrorDownloadUrl": "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.5.apk"
+﻿{
+    "version":  "1.0.5",
+    "versionCode":  6,
+    "minRequiredVersion":  "1.0",
+    "forceUpdate":  false,
+    "title":  "A1 Swaara v1.0.5 - Flagship Editorial Redesign \u0026 Slop Cleanup",
+    "sizeBytes":  13568049,
+    "sizeLabel":  "12.94 MB",
+    "minAndroid":  "Android 6.0+ (API 23)",
+    "sha256":  "86e5c2fac2b7e32f46b981837a5bf53692a06afb83e5c79ecc714bfa6b31a0ba",
+    "changelog":  "- Flagship Editorial Redesign: Removed all artificial gradient borders, glowing avatar rings, and visual clutter across every screen\n- Premium Surfaces: Calm hierarchy using Obsidian Deep and Elevated surfaces, solid brand-moment actions, and typography contrast\n- Cleaned Components: Streamlined Equalizer, Studio Effects, Loop Counter, Dedications, Cloud Sync, and Jam Session dialogs\n- Universal Artworks: Flat, modern album and playlist cover styling matching top-tier music streaming apps\n- Verified 12.84 MB R8-optimized release package",
+    "downloadUrl":  "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.5.apk",
+    "mirrorDownloadUrl":  "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.5.apk"
 }
