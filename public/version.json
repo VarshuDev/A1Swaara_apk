@@ -1,14 +1,14 @@
 ﻿{
-    "version":  "1.0.5",
-    "versionCode":  6,
+    "version":  "1.0.6",
+    "versionCode":  7,
     "minRequiredVersion":  "1.0",
     "forceUpdate":  false,
-    "title":  "A1 Swaara v1.0.5 - Flagship Editorial Redesign \u0026 Slop Cleanup",
-    "sizeBytes":  13568049,
+    "title":  "A1 Swaara v1.0.6 - Live Jamming & Real-Time Sync Sovereignty",
+    "sizeBytes":  13568060,
     "sizeLabel":  "12.94 MB",
     "minAndroid":  "Android 6.0+ (API 23)",
-    "sha256":  "86e5c2fac2b7e32f46b981837a5bf53692a06afb83e5c79ecc714bfa6b31a0ba",
-    "changelog":  "- Flagship Editorial Redesign: Removed all artificial gradient borders, glowing avatar rings, and visual clutter across every screen\n- Premium Surfaces: Calm hierarchy using Obsidian Deep and Elevated surfaces, solid brand-moment actions, and typography contrast\n- Cleaned Components: Streamlined Equalizer, Studio Effects, Loop Counter, Dedications, Cloud Sync, and Jam Session dialogs\n- Universal Artworks: Flat, modern album and playlist cover styling matching top-tier music streaming apps\n- Verified 12.84 MB R8-optimized release package",
-    "downloadUrl":  "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.5.apk",
-    "mirrorDownloadUrl":  "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.5.apk"
+    "sha256":  "c9d708a3d7f46cc5d773d257eca27266fc8d3eba72f25cf04e82facb7001a617",
+    "changelog":  "- Live Jamming Sovereignty: Migrated group listening sessions to Firebase Firestore for bulletproof zero-downtime synchronization\n- Guest & Anonymous Hosting: Unlocked full Jam creation and joining for all users without forced sign-in hurdles\n- Instant Playback Lockstep: Sub-second latency synchronization with drift auto-correction and real-time seek tracking\n- Democratic Queue & Dedications: Live real-time voting, dedication marquee, and animated vibes persisted directly across all listeners\n- Home Screen Live Banner: Seamless session status banner with direct entry to the live studio turntable",
+    "downloadUrl":  "https://github.com/VarshuDev/A1Swaara_apk/raw/main/A1_Swaara_v1.0.6.apk",
+    "mirrorDownloadUrl":  "https://raw.githubusercontent.com/VarshuDev/A1Swaara_apk/main/A1_Swaara_v1.0.6.apk"
 }
