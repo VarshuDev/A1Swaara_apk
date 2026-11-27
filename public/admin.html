@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A1 Swaara — Live Telemetry & Audience Command Center</title>
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #08080C;
+      --card-bg: #111118;
+      --card-border: #1E1E2B;
+      --hover-bg: #1A1A26;
+      --magenta: #FF2DAA;
+      --cyan: #20CFFF;
+      --emerald: #00E676;
+      --amber: #FFB300;
+      --crimson: #FF3366;
+      --text-main: #FFFFFF;
+      --text-muted: #9E9EA8;
+      --text-dim: #656573;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(17, 17, 24, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-pill {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(32, 207, 255, 0.12);
+      color: var(--cyan);
+      font-weight: 600;
+      border: 1px solid rgba(32, 207, 255, 0.25);
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      background: var(--card-border);
+      color: var(--text-main);
+    }
+    .btn:hover {
+      background: var(--hover-bg);
+      border-color: var(--text-muted);
+    }
+    .btn-primary {
+      background: var(--magenta);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #e02094;
+    }
+    .btn-danger {
+      background: rgba(255, 51, 102, 0.15);
+      color: var(--crimson);
+      border: 1px solid rgba(255, 51, 102, 0.3);
+    }
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px;
+      width: 100%;
+      flex: 1;
+    }
+    /* Passcode Auth Overlay */
+    #authOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 8, 12, 0.96);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .auth-box h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .auth-box p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      font-size: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .auth-input:focus {
+      border-color: var(--magenta);
+    }
+    .auth-error {
+      color: var(--crimson);
+      font-size: 0.82rem;
+      margin-top: 10px;
+      display: none;
+    }
+    /* KPI Stats Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--card-border);
+    }
+    .kpi-card.kpi-magenta::before { background: var(--magenta); }
+    .kpi-card.kpi-cyan::before { background: var(--cyan); }
+    .kpi-card.kpi-emerald::before { background: var(--emerald); }
+    .kpi-card.kpi-amber::before { background: var(--amber); }
+
+    .kpi-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .kpi-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    /* Navigation Tabs */
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      padding: 10px 18px;
+      border-radius: 8px 8px 0 0;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      color: var(--magenta);
+      border-bottom: 2px solid var(--magenta);
+      background: rgba(255, 45, 170, 0.05);
+    }
+    .badge-count {
+      background: var(--card-border);
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      color: var(--text-main);
+    }
+    /* Content Sections */
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    /* Data Tables & Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    th {
+      background: rgba(26, 26, 38, 0.4);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+      letter-spacing: 0.05em;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: var(--hover-bg);
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--magenta), var(--cyan));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #fff;
+      margin-right: 10px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      display: inline-block;
+      margin-right: 6px;
+      box-shadow: 0 0 8px var(--emerald);
+    }
+    .pulse-dot.idle {
+      background: var(--text-dim);
+      box-shadow: none;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .tag {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: inline-block;
+    }
+    .tag-emerald { background: rgba(0, 230, 118, 0.12); color: var(--emerald); }
+    .tag-magenta { background: rgba(255, 45, 170, 0.12); color: var(--magenta); }
+    .tag-cyan { background: rgba(32, 207, 255, 0.12); color: var(--cyan); }
+    .tag-amber { background: rgba(255, 179, 0, 0.12); color: var(--amber); }
+
+    .track-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .track-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--card-border);
+    }
+    .track-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .track-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 320px;
+    }
+    .track-artist {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 320px;
+    }
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 18px 24px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Passcode Overlay -->
+  <div id="authOverlay">
+    <div class="auth-box">
+      <img src="/icon.png" alt="A1 Swaara Logo" style="width: 56px; height: 56px; border-radius: 14px; margin-bottom: 16px;" />
+      <h2>Telemetry Command Center</h2>
+      <p>Enter the sovereign administrator key to inspect live community audience telemetry and device metrics.</p>
+      <input type="password" id="passcodeInput" class="auth-input" placeholder="••••••••" autocomplete="off" />
+      <button class="btn btn-primary" id="loginBtn" style="width: 100%; justify-content: center; padding: 12px;">Unlock Portal</button>
+      <div id="authError" class="auth-error">Invalid administrator key. Access denied.</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <img src="/icon.png" alt="A1 Swaara" />
+      <div>
+        <div class="brand-title">A1 Swaara Telemetry</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Sovereign Audience &amp; Infrastructure Portal</div>
+      </div>
+      <span class="brand-pill" id="livePill">● Connected to raaga-music-8e1f2</span>
+    </div>
+    <div class="header-controls">
+      <button class="btn" id="refreshBtn">
+        <span id="refreshIcon">🔄</span>
+        <span>Refresh</span>
+      </button>
+      <button class="btn btn-danger" id="logoutBtn">Lock</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Top KPI Row -->
+    <section class="kpi-grid">
+      <div class="kpi-card kpi-magenta">
+        <div class="kpi-label">Registered Listeners</div>
+        <div class="kpi-value" id="kpiUsers">—</div>
+        <div class="kpi-sub" id="kpiUsersSub">Identified cloud accounts</div>
+      </div>
+      <div class="kpi-card kpi-cyan">
+        <div class="kpi-label">Active Hardware Devices</div>
+        <div class="kpi-value" id="kpiDevices">—</div>
+        <div class="kpi-sub" id="kpiDevicesSub">Samsung, OnePlus, Xiaomi etc.</div>
+      </div>
+      <div class="kpi-card kpi-emerald">
+        <div class="kpi-label">Total Community Streams</div>
+        <div class="kpi-value" id="kpiStreams">—</div>
+        <div class="kpi-sub" id="kpiStreamsSub">Crowdsourced plays recorded</div>
+      </div>
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-label">Live Jam Rooms</div>
+        <div class="kpi-value" id="kpiJams">—</div>
+        <div class="kpi-sub" id="kpiJamsSub">Real-time collaborative sessions</div>
+      </div>
+    </section>
+
+    <!-- Tabs Navigation -->
+    <nav class="tabs-bar" role="tablist">
+      <button class="tab-btn active" data-tab="tab-users">
+        <span>👥 Identified Users</span>
+        <span class="badge-count" id="countBadgeUsers">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-devices">
+        <span>📱 Active Devices</span>
+        <span class="badge-count" id="countBadgeDevices">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-trending">
+        <span>🔥 Community Charts</span>
+        <span class="badge-count" id="countBadgeTrending">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-jams">
+        <span>📻 Live Jam Rooms</span>
+        <span class="badge-count" id="countBadgeJams">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-reports">
+        <span>🐛 Bug Reports &amp; Feedback</span>
+        <span class="badge-count" id="countBadgeReports">0</span>
+      </button>
+    </nav>
+
+    <!-- Tab 1: Users -->
+    <section id="tab-users" class="tab-content active">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Registered App Users &amp; Profiles</span>
+          <span class="mono" id="usersSummaryLabel">Loading...</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>User ID</th>
+                <th>Favorites</th>
+                <th>Playlists</th>
+                <th>Last Backup</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="5" class="empty-state"><div class="loading-spinner"></div> Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Devices -->
+    <section id="tab-devices" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Hardware Devices (Swaara Connect)</span>
+          <span class="mono" id="devicesSummaryLabel">Loading...</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Device Model</th>
+                <th>Type</th>
+                <th>Device ID</th>
+                <th>Current Status / Playback</th>
+                <th>Last Active</th>
+              </tr>
+            </thead>
+            <tbody id="devicesTableBody">
+              <tr><td colspan="5" class="empty-state"><div class="loading-spinner"></div> Loading devices...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Community Charts -->
+    <section id="tab-trending" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Community Top Played Songs</span>
+          <span class="mono" id="trendingSummaryLabel">Loading...</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 50px;">#</th>
+                <th>Song &amp; Artist</th>
+                <th>Plays</th>
+                <th>Last Streamed</th>
+                <th>Track ID</th>
+              </tr>
+            </thead>
+            <tbody id="trendingTableBody">
+              <tr><td colspan="5" class="empty-state"><div class="loading-spinner"></div> Loading community charts...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Live Jam Rooms -->
+    <section id="tab-jams" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Live Jamming Sessions</span>
+          <span class="mono" id="jamsSummaryLabel">Loading...</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Room Code</th>
+                <th>Session Name</th>
+                <th>Host</th>
+                <th>Current Track</th>
+                <th>Listeners</th>
+                <th>Status</th>
+                <th>Last Heartbeat</th>
+              </tr>
+            </thead>
+            <tbody id="jamsTableBody">
+              <tr><td colspan="7" class="empty-state"><div class="loading-spinner"></div> Loading sessions...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: Bug Reports -->
+    <section id="tab-reports" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">In-App User Bug Reports &amp; Crash Dumps</span>
+          <span class="mono" id="reportsSummaryLabel">Loading...</span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Device / OS</th>
+                <th>Issue Summary</th>
+                <th>Report Details</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTableBody">
+              <tr><td colspan="4" class="empty-state"><div class="loading-spinner"></div> Loading feedback...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div>A1 Swaara Telemetry &bull; Powered by Firebase Firestore REST Engine</div>
+    <div class="mono" id="lastUpdatedLabel">Last updated: Just now</div>
+  </footer>
+
+  <script>
+    // Configuration
+    const FIRESTORE_BASE = "https://firestore.googleapis.com/v1/projects/raaga-music-8e1f2/databases/(default)/documents";
+    const API_KEY = "AIzaSyD8F5v--Ls6YXVCQ_5UhBY20scKJQu7Lxo";
+    const ADMIN_PASSCODE = "swaara2026"; // Changeable admin passcode
+
+    // State
+    let isAuthed = false;
+    let autoRefreshTimer = null;
+
+    // Helper: Parse Firestore Document
+    function parseDoc(doc) {
+      const fields = doc.fields || {};
+      const res = {};
+      for (const [k, v] of Object.entries(fields)) {
+        if (v.stringValue !== undefined) res[k] = v.stringValue;
+        else if (v.booleanValue !== undefined) res[k] = v.booleanValue;
+        else if (v.integerValue !== undefined) res[k] = parseInt(v.integerValue, 10);
+        else if (v.doubleValue !== undefined) res[k] = parseFloat(v.doubleValue);
+        else if (v.arrayValue !== undefined) {
+          res[k] = (v.arrayValue.values || []).map(item => {
+            if (item.stringValue !== undefined) return item.stringValue;
+            if (item.integerValue !== undefined) return parseInt(item.integerValue, 10);
+            if (item.mapValue !== undefined) return parseDoc(item.mapValue);
+            return item;
+          });
+        }
+      }
+      res._id = doc.name ? doc.name.split('/').pop() : '';
+      res._createTime = doc.createTime;
+      res._updateTime = doc.updateTime;
+      return res;
+    }
+
+    // Helper: Format Time
+    function formatTime(timestamp) {
+      if (!timestamp) return "Never";
+      const ms = typeof timestamp === "string" ? new Date(timestamp).getTime() : timestamp;
+      if (isNaN(ms) || ms === 0) return "Never";
+      
+      const diffSec = Math.floor((Date.now() - ms) / 1000);
+      if (diffSec < 60) return "Just now";
+      if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+      if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+      
+      const d = new Date(ms);
+      return d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+
+    // Auth Handling
+    const authOverlay = document.getElementById("authOverlay");
+    const passcodeInput = document.getElementById("passcodeInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const authError = document.getElementById("authError");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function checkAuth() {
+      const stored = sessionStorage.getItem("swaara_admin_auth") || localStorage.getItem("swaara_admin_auth");
+      if (stored === "true" || window.location.search.includes("key=" + ADMIN_PASSCODE)) {
+        isAuthed = true;
+        authOverlay.style.display = "none";
+        loadAllData();
+      } else {
+        authOverlay.style.display = "flex";
+        passcodeInput.focus();
+      }
+    }
+
+    loginBtn.addEventListener("click", () => {
+      if (passcodeInput.value.trim() === ADMIN_PASSCODE) {
+        sessionStorage.setItem("swaara_admin_auth", "true");
+        localStorage.setItem("swaara_admin_auth", "true");
+        authOverlay.style.display = "none";
+        isAuthed = true;
+        loadAllData();
+      } else {
+        authError.style.display = "block";
+        passcodeInput.value = "";
+      }
+    });
+
+    passcodeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") loginBtn.click();
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem("swaara_admin_auth");
+      localStorage.removeItem("swaara_admin_auth");
+      location.reload();
+    });
+
+    // Tab Navigation
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        const tabId = btn.getAttribute("data-tab");
+        document.getElementById(tabId).classList.add("active");
+      });
+    });
+
+    // Data Loaders
+    async function fetchCollection(name, pageSize = 100) {
+      try {
+        const url = `${FIRESTORE_BASE}/${name}?pageSize=${pageSize}&key=${API_KEY}`;
+        const res = await fetch(url);
+        if (!res.ok) return [];
+        const json = await res.json();
+        return (json.documents || []).map(parseDoc);
+      } catch (e) {
+        console.error(`Error loading ${name}`, e);
+        return [];
+      }
+    }
+
+    async function loadAllData() {
+      const refreshIcon = document.getElementById("refreshIcon");
+      refreshIcon.innerHTML = `<span class="loading-spinner"></span>`;
+
+      try {
+        // Parallel fetch for speed
+        const [users, devices, trending, jams, reports] = await Promise.all([
+          fetchCollection("users", 100),
+          fetchCollection("connect_devices", 100),
+          fetchCollection("community_trending", 100),
+          fetchCollection("jam_rooms", 50),
+          fetchCollection("bug_reports", 50)
+        ]);
+
+        // Render KPI counters
+        document.getElementById("kpiUsers").innerText = users.length;
+        document.getElementById("kpiDevices").innerText = devices.length;
+        
+        let totalPlays = 0;
+        trending.forEach(t => totalPlays += (t.playCount || 0));
+        document.getElementById("kpiStreams").innerText = totalPlays.toLocaleString();
+
+        const activeJamsCount = jams.filter(j => (Date.now() - (j.playbackUpdatedAt || j.updatedAt || 0)) < 15 * 60 * 1000).length;
+        document.getElementById("kpiJams").innerText = activeJamsCount;
+
+        // Render Badges
+        document.getElementById("countBadgeUsers").innerText = users.length;
+        document.getElementById("countBadgeDevices").innerText = devices.length;
+        document.getElementById("countBadgeTrending").innerText = trending.length;
+        document.getElementById("countBadgeJams").innerText = jams.length;
+        document.getElementById("countBadgeReports").innerText = reports.length;
+
+        // Render Tables
+        renderUsers(users);
+        renderDevices(devices);
+        renderTrending(trending);
+        renderJams(jams);
+        renderReports(reports);
+
+        document.getElementById("lastUpdatedLabel").innerText = `Last refreshed: ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        console.error("Dashboard refresh error:", err);
+      } finally {
+        refreshIcon.innerText = "🔄";
+      }
+    }
+
+    // 1. Users Render
+    function renderUsers(users) {
+      const tbody = document.getElementById("usersTableBody");
+      document.getElementById("usersSummaryLabel").innerText = `${users.length} registered profiles`;
+      if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No user profiles recorded yet.</td></tr>`;
+        return;
+      }
+      users.sort((a, b) => (b.lastBackup || 0) - (a.lastBackup || 0));
+      tbody.innerHTML = users.map(u => {
+        const initial = (u.displayName || "U").charAt(0).toUpperCase();
+        return `
+          <tr>
+            <td>
+              <div style="display:flex; align-items:center;">
+                <div class="user-avatar">${initial}</div>
+                <div>
+                  <div style="font-weight:600;">${escapeHtml(u.displayName || "Anonymous Listener")}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="mono">${escapeHtml(u.userId || u._id)}</span></td>
+            <td><span class="tag tag-cyan">${u.favoritesCount || 0} favs</span></td>
+            <td><span class="tag tag-magenta">${u.playlistsCount || 0} playlists</span></td>
+            <td>${formatTime(u.lastBackup || u._updateTime)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 2. Devices Render
+    function renderDevices(devices) {
+      const tbody = document.getElementById("devicesTableBody");
+      document.getElementById("devicesSummaryLabel").innerText = `${devices.length} hardware targets`;
+      if (devices.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No connect devices online.</td></tr>`;
+        return;
+      }
+      devices.sort((a, b) => (b.lastSeenMs || 0) - (a.lastSeenMs || 0));
+      tbody.innerHTML = devices.map(d => {
+        const isOnline = (Date.now() - (d.lastSeenMs || 0)) < 3 * 60 * 1000;
+        const isPlaying = d.isPlaying === true;
+        let statusHtml = `<span class="pulse-dot ${isOnline ? '' : 'idle'}"></span>`;
+        if (isPlaying && d.currentTitle) {
+          statusHtml += `<span class="tag tag-emerald">Playing: ${escapeHtml(d.currentTitle)}</span>`;
+        } else if (isOnline) {
+          statusHtml += `<span class="tag tag-cyan">Online / Idle</span>`;
+        } else {
+          statusHtml += `<span style="color:var(--text-dim);">Offline</span>`;
+        }
+
+        return `
+          <tr>
+            <td><strong>${escapeHtml(d.deviceName || "Unknown Android Device")}</strong></td>
+            <td><span class="tag tag-magenta">${escapeHtml(d.deviceType || "android")}</span></td>
+            <td><span class="mono">${escapeHtml(d.deviceId || d._id)}</span></td>
+            <td>${statusHtml}</td>
+            <td>${formatTime(d.lastSeenMs || d._updateTime)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 3. Trending Render
+    function renderTrending(trending) {
+      const tbody = document.getElementById("trendingTableBody");
+      document.getElementById("trendingSummaryLabel").innerText = `${trending.length} distinct tracks in rotation`;
+      if (trending.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No community stream data yet.</td></tr>`;
+        return;
+      }
+      trending.sort((a, b) => (b.playCount || 0) - (a.playCount || 0));
+      tbody.innerHTML = trending.map((t, idx) => {
+        const artwork = t.artworkUrl || "/icon.png";
+        return `
+          <tr>
+            <td style="font-weight:700; color: ${idx < 3 ? 'var(--magenta)' : 'var(--text-muted)'};">#${idx + 1}</td>
+            <td>
+              <div class="track-row">
+                <img src="${escapeHtml(artwork)}" alt="Cover" class="track-img" onerror="this.src='/icon.png'" />
+                <div class="track-info">
+                  <div class="track-title">${escapeHtml(t.title || "Unknown Title")}</div>
+                  <div class="track-artist">${escapeHtml(t.artist || "Unknown Artist")}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-emerald">${(t.playCount || 0).toLocaleString()} plays</span></td>
+            <td>${formatTime(t.lastPlayed || t._updateTime)}</td>
+            <td>
+              <a href="https://music.youtube.com/watch?v=${encodeURIComponent(t.songId || t._id)}" target="_blank" style="color:var(--cyan); text-decoration:none; font-family:'JetBrains Mono'; font-size:0.8rem;">
+                ${escapeHtml(t.songId || t._id)} ↗
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 4. Jam Rooms Render
+    function renderJams(jams) {
+      const tbody = document.getElementById("jamsTableBody");
+      document.getElementById("jamsSummaryLabel").innerText = `${jams.length} total rooms recorded`;
+      if (jams.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No live Jam rooms active right now.</td></tr>`;
+        return;
+      }
+      jams.sort((a, b) => (b.playbackUpdatedAt || b.updatedAt || 0) - (a.playbackUpdatedAt || a.updatedAt || 0));
+      tbody.innerHTML = jams.map(j => {
+        const lastActive = j.playbackUpdatedAt || j.updatedAt || 0;
+        const isActive = (Date.now() - lastActive) < 10 * 60 * 1000;
+        return `
+          <tr>
+            <td><span class="tag tag-cyan" style="font-family:'JetBrains Mono'; font-weight:700; font-size:0.85rem;">${escapeHtml(j.roomCode || j._id)}</span></td>
+            <td><strong>${escapeHtml(j.roomName || "Swaara Live Session")}</strong></td>
+            <td>${escapeHtml(j.hostName || "Host")}</td>
+            <td>${escapeHtml(j.currentTitle || "Waiting for track...")}</td>
+            <td><span class="tag tag-magenta">${j.activeListenersCount || 1} listening</span></td>
+            <td>${isActive ? '<span class="tag tag-emerald">LIVE</span>' : '<span style="color:var(--text-dim);">Expired</span>'}</td>
+            <td>${formatTime(lastActive)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 5. Bug Reports Render
+    function renderReports(reports) {
+      const tbody = document.getElementById("reportsTableBody");
+      document.getElementById("reportsSummaryLabel").innerText = `${reports.length} user submissions`;
+      if (reports.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No user feedback or bug reports submitted.</td></tr>`;
+        return;
+      }
+      reports.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      tbody.innerHTML = reports.map(r => {
+        return `
+          <tr>
+            <td>${formatTime(r.timestamp || r._createTime)}</td>
+            <td><span class="tag tag-amber">${escapeHtml(r.device || r.deviceName || "Android Device")}</span></td>
+            <td><strong>${escapeHtml(r.summary || r.title || "Feedback")}</strong></td>
+            <td style="max-width:350px; font-size:0.82rem; color:var(--text-muted);">${escapeHtml(r.description || r.details || r.message || "—")}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Manual Refresh
+    document.getElementById("refreshBtn").addEventListener("click", loadAllData);
+
+    // Initial Start
+    checkAuth();
+  </script>
+</body>
+</html>
